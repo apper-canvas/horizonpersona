@@ -27,9 +27,9 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-      </AnimatePresence>
+</AnimatePresence>
 
-{/* Sidebar */}
+      {/* Sidebar */}
       <motion.aside
         initial={false}
         animate={{ x: sidebarOpen ? 0 : -256 }}
@@ -53,7 +53,8 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
               <ApperIcon name="X" className="h-5 w-5 text-gray-500" />
             </button>
           </div>
-{/* Navigation */}
+
+          {/* Navigation */}
           <nav className="flex-1 px-4 py-6 overflow-y-auto custom-scrollbar min-h-0">
             <div className="space-y-2">
               {routes.map((route) => (
@@ -117,7 +118,8 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
               </div>
             </div>
           </nav>
-{/* Footer */}
+
+          {/* Footer */}
           <div className="p-4 border-t border-gray-100 flex-shrink-0">
             <div className="flex items-center space-x-3 p-3 rounded-lg bg-surface-50">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warm-gradient">
