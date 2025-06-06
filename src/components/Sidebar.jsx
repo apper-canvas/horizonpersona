@@ -29,13 +29,11 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
         )}
 </AnimatePresence>
 
-      {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ x: sidebarOpen ? 0 : -256 }}
-        className={`fixed left-0 top-0 z-30 h-screen w-64 bg-white shadow-2xl lg:relative lg:translate-x-0 lg:shadow-none lg:z-auto transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
+{/* Sidebar */}
+      <aside
+        className={`fixed left-0 top-0 z-30 h-screen w-64 bg-white shadow-2xl lg:relative lg:shadow-none lg:z-auto transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
       >
         <div className="flex h-full flex-col min-h-0">
           {/* Logo/Header */}
@@ -137,9 +135,9 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
                 <ApperIcon name="Settings" className="h-4 w-4" />
               </motion.button>
             </div>
-          </div>
+</div>
         </div>
-      </motion.aside>
+      </aside>
     </>
   )
 }
