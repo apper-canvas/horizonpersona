@@ -26,16 +26,18 @@ const Documents = () => {
     }
   }
 
-  const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doc.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || doc.category === selectedCategory
+const filteredDocuments = documents.filter(doc => {
+    const title = doc?.title || ''
+    const category = doc?.category || ''
+    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = selectedCategory === 'all' || category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
   const categories = [...new Set(documents.map(doc => doc.category))]
 
-  const getFileIcon = (type) => {
+const getFileIcon = (type) => {
+    if (!type) return 'FileText'
     switch (type.toLowerCase()) {
       case 'pdf':
         return 'FileText'
@@ -80,8 +82,8 @@ const Documents = () => {
           {[
             { label: 'Total Documents', value: documents.length, icon: 'FileText', color: 'bg-blue-500' },
             { label: 'Categories', value: categories.length, icon: 'Folder', color: 'bg-green-500' },
-            { label: 'This Month', value: documents.filter(d => new Date(d.uploadDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length, icon: 'Upload', color: 'bg-purple-500' },
-            { label: 'Shared', value: documents.filter(d => d.shared).length, icon: 'Share', color: 'bg-orange-500' }
+{ label: 'This Month', value: documents.filter(d => d?.uploadDate && new Date(d.uploadDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length, icon: 'Upload', color: 'bg-purple-500' },
+            { label: 'Shared', value: documents.filter(d => d?.shared === true).length, icon: 'Share', color: 'bg-orange-500' }
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -147,14 +149,14 @@ const Documents = () => {
               whileHover={{ y: -5 }}
               className="bg-white rounded-xl shadow-soft p-6 hover:shadow-card transition-all"
             >
-              <div className="flex items-start justify-between mb-4">
+<div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <ApperIcon name={getFileIcon(document.type)} className="h-6 w-6 text-primary" />
+                    <ApperIcon name={getFileIcon(document?.fileType)} className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 truncate">{document.name}</h3>
-                    <p className="text-gray-500 text-sm">{document.type.toUpperCase()}</p>
+                    <h3 className="font-semibold text-gray-900 truncate">{document?.title || 'Untitled Document'}</h3>
+                    <p className="text-gray-500 text-sm">{(document?.fileType || 'unknown').toUpperCase()}</p>
                   </div>
                 </div>
                 <div className="flex space-x-1">
@@ -167,34 +169,34 @@ const Documents = () => {
                 </div>
               </div>
 
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{document.description}</p>
-
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Category:</span>
-                  <span className="text-gray-900">{document.category}</span>
+                  <span className="text-gray-900">{document?.category || 'Uncategorized'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Size:</span>
-                  <span className="text-gray-900">{formatFileSize(document.size)}</span>
+                  <span className="text-gray-500">Type:</span>
+                  <span className="text-gray-900">{document?.fileType || 'Unknown'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Uploaded:</span>
-                  <span className="text-gray-900">{document.uploadDate}</span>
+                  <span className="text-gray-900">{document?.uploadDate || 'Unknown date'}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">By:</span>
-                  <span className="text-gray-900">{document.uploadedBy}</span>
-                </div>
+                {document?.employeeId && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Employee ID:</span>
+                    <span className="text-gray-900">{document.employeeId}</span>
+                  </div>
+                )}
               </div>
 
-              <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+<div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  document.shared 
+                  document?.employeeId === null 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-gray-100 text-gray-800'
                 }`}>
-                  {document.shared ? 'Shared' : 'Private'}
+                  {document?.employeeId === null ? 'Public' : 'Employee Specific'}
                 </span>
                 <div className="flex space-x-2">
                   <button className="p-2 text-gray-400 hover:text-primary transition-colors">
