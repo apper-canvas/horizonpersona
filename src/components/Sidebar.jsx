@@ -1,11 +1,17 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import ApperIcon from './ApperIcon'
 
-const Sidebar = ({ routes, activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
-  const sidebarVariants = {
-    open: { x: 0 },
-    closed: { x: '-100%' }
+const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
+  const location = useLocation()
+
+  const handleNavClick = () => {
+    setSidebarOpen(false) // Close sidebar on mobile after selection
+  }
+
+  const isActiveRoute = (routePath) => {
+    return location.pathname === routePath
   }
 
   return (
@@ -17,82 +23,121 @@ const Sidebar = ({ routes, activeTab, setActiveTab, sidebarOpen, setSidebarOpen 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            className="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
       </AnimatePresence>
 
       {/* Sidebar */}
-      <motion.div
-        initial="closed"
-        animate={sidebarOpen ? "open" : "closed"}
-        variants={sidebarVariants}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white shadow-lg lg:shadow-none border-r border-gray-200"
+      <motion.aside
+        initial={false}
+        animate={{ x: sidebarOpen ? 0 : -100 }}
+        className={`fixed left-0 top-0 z-30 h-full w-64 bg-white shadow-2xl lg:relative lg:translate-x-0 lg:shadow-none transition-transform duration-300 ease-in-out`}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="p-6 border-b border-gray-100">
+        <div className="flex h-full flex-col">
+          {/* Logo/Header */}
+          <div className="flex h-16 items-center justify-between px-6 border-b border-gray-100">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-warm-gradient rounded-xl flex items-center justify-center shadow-soft">
-                <ApperIcon name="Heart" className="w-5 h-5 text-white" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warm-gradient">
+                <ApperIcon name="Users" className="h-5 w-5 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900 font-heading">Persona</h1>
-                <p className="text-xs text-gray-500">HR Management</p>
-              </div>
+              <span className="text-xl font-bold text-gray-900 font-heading">HR Portal</span>
             </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <ApperIcon name="X" className="h-5 w-5 text-gray-500" />
+            </button>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            {routes.map((route) => (
-              <motion.button
-                key={route.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  setActiveTab(route.id)
-                  setSidebarOpen(false)
-                }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left font-medium transition-all ${
-                  activeTab === route.id
-                    ? 'bg-warm-gradient text-white shadow-soft'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <ApperIcon 
-                  name={route.icon} 
-                  className={`w-5 h-5 ${
-                    activeTab === route.id ? 'text-white' : 'text-gray-400'
-                  }`} 
-                />
-                <span>{route.label}</span>
-              </motion.button>
-            ))}
+          <nav className="flex-1 px-4 py-6">
+            <div className="space-y-2">
+              {routes.map((route) => (
+                <Link
+                  key={route.id}
+                  to={route.path}
+                  onClick={handleNavClick}
+                  className="block"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
+                      isActiveRoute(route.path)
+                        ? 'bg-warm-gradient text-white shadow-soft'
+                        : 'text-gray-700 hover:bg-surface-100 hover:text-gray-900'
+                    }`}
+                  >
+                    <ApperIcon
+                      name={route.icon}
+                      className={`h-5 w-5 ${
+                        isActiveRoute(route.path) ? 'text-white' : 'text-gray-500'
+                      }`}
+                    />
+                    <span className="font-medium">{route.label}</span>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Quick Actions */}
+            <div className="mt-8 pt-6 border-t border-gray-100">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                Quick Actions
+              </h3>
+              <div className="space-y-2">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-surface-100 rounded-lg transition-colors"
+                >
+                  <ApperIcon name="Plus" className="h-4 w-4 text-gray-500" />
+                  <span>Add Employee</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-surface-100 rounded-lg transition-colors"
+                >
+                  <ApperIcon name="Calendar" className="h-4 w-4 text-gray-500" />
+                  <span>Request Leave</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-surface-100 rounded-lg transition-colors"
+                >
+                  <ApperIcon name="FileText" className="h-4 w-4 text-gray-500" />
+                  <span>Upload Document</span>
+                </motion.button>
+              </div>
+            </div>
           </nav>
 
-          {/* User Profile */}
+          {/* Footer */}
           <div className="p-4 border-t border-gray-100">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-                alt="Admin"
-                className="w-10 h-10 rounded-xl object-cover"
-              />
+            <div className="flex items-center space-x-3 p-3 rounded-lg bg-surface-50">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warm-gradient">
+                <span className="text-sm font-medium text-white">JD</span>
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">Alex Johnson</p>
+                <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
                 <p className="text-xs text-gray-500 truncate">HR Manager</p>
               </div>
-              <ApperIcon name="Settings" className="w-4 h-4 text-gray-400" />
-            </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <ApperIcon name="Settings" className="h-4 w-4" />
+              </motion.button>
+            </div>
           </div>
         </div>
-      </motion.div>
+      </motion.aside>
     </>
   )
 }
