@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "employeeId": "1",
+    "type": "Vacation",
+    "startDate": "2024-02-15",
+    "endDate": "2024-02-19",
+    "status": "pending",
+    "reason": "Family vacation to Hawaii. Taking some time off to recharge and spend quality time with family.",
+    "approvedBy": null
+  },
+  {
+    "id": "2",
+    "employeeId": "2",
+    "type": "Sick",
+    "startDate": "2024-01-22",
+    "endDate": "2024-01-23",
+    "status": "approved",
+    "reason": "Flu symptoms and doctor's appointment for recovery.",
+    "approvedBy": "6"
+  },
+  {
+    "id": "3",
+    "employeeId": "3",
+    "type": "Personal",
+    "startDate": "2024-02-28",
+    "endDate": "2024-02-28",
+    "status": "pending",
+    "reason": "Moving to a new apartment, need time for the relocation process.",
+    "approvedBy": null
+  },
+  {
+    "id": "4",
+    "employeeId": "4",
+    "type": "Vacation",
+    "startDate": "2024-03-10",
+    "endDate": "2024-03-17",
+    "status": "approved",
+    "reason": "Spring break trip with college friends to celebrate my birthday.",
+    "approvedBy": "8"
+  },
+  {
+    "id": "5",
+    "employeeId": "5",
+    "type": "Conference",
+    "startDate": "2024-04-05",
+    "endDate": "2024-04-07",
+    "status": "approved",
+    "reason": "Attending Design Leadership Summit in San Francisco to learn about industry trends.",
+    "approvedBy": null
+  }
+]

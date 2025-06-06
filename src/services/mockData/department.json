@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "Engineering",
+    "headId": "6",
+    "parentId": null
+  },
+  {
+    "id": "2",
+    "name": "Design",
+    "headId": "5",
+    "parentId": null
+  },
+  {
+    "id": "3",
+    "name": "Marketing",
+    "headId": "7",
+    "parentId": null
+  },
+  {
+    "id": "4",
+    "name": "Sales",
+    "headId": "8",
+    "parentId": null
+  },
+  {
+    "id": "5",
+    "name": "HR",
+    "headId": "9",
+    "parentId": null
+  },
+  {
+    "id": "6",
+    "name": "Finance",
+    "headId": "10",
+    "parentId": null
+  }
+]

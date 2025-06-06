@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "title": "Employee Handbook 2024",
+    "category": "Policy",
+    "employeeId": null,
+    "uploadDate": "2024-01-01",
+    "fileUrl": "https://example.com/handbook-2024.pdf",
+    "fileType": "pdf"
+  },
+  {
+    "id": "2",
+    "title": "Remote Work Guidelines",
+    "category": "Policy",
+    "employeeId": null,
+    "uploadDate": "2024-01-15",
+    "fileUrl": "https://example.com/remote-work.pdf",
+    "fileType": "pdf"
+  },
+  {
+    "id": "3",
+    "title": "Sarah Johnson - Employment Contract",
+    "category": "Contract",
+    "employeeId": "1",
+    "uploadDate": "2022-03-15",
+    "fileUrl": "https://example.com/sarah-contract.pdf",
+    "fileType": "pdf"
+  },
+  {
+    "id": "4",
+    "title": "Mike Chen - Performance Review Q4 2023",
+    "category": "Review",
+    "employeeId": "2",
+    "uploadDate": "2024-01-10",
+    "fileUrl": "https://example.com/mike-review-q4.pdf",
+    "fileType": "pdf"
+  },
+  {
+    "id": "5",
+    "title": "Benefits Overview 2024",
+    "category": "Benefits",
+    "employeeId": null,
+    "uploadDate": "2023-12-20",
+    "fileUrl": "https://example.com/benefits-2024.pdf",
+    "fileType": "pdf"
+  }
+]
