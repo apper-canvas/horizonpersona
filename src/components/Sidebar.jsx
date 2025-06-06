@@ -29,15 +29,17 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
+{/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ x: sidebarOpen ? 0 : -100 }}
-        className={`fixed left-0 top-0 z-30 h-full w-64 bg-white shadow-2xl lg:relative lg:translate-x-0 lg:shadow-none transition-transform duration-300 ease-in-out`}
+        animate={{ x: sidebarOpen ? 0 : -256 }}
+        className={`fixed left-0 top-0 z-30 h-screen w-64 bg-white shadow-2xl lg:relative lg:translate-x-0 lg:shadow-none lg:z-auto transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0`}
       >
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col min-h-0">
           {/* Logo/Header */}
-          <div className="flex h-16 items-center justify-between px-6 border-b border-gray-100">
+          <div className="flex h-16 items-center justify-between px-6 border-b border-gray-100 flex-shrink-0">
             <div className="flex items-center space-x-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warm-gradient">
                 <ApperIcon name="Users" className="h-5 w-5 text-white" />
@@ -51,9 +53,8 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
               <ApperIcon name="X" className="h-5 w-5 text-gray-500" />
             </button>
           </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6">
+{/* Navigation */}
+          <nav className="flex-1 px-4 py-6 overflow-y-auto custom-scrollbar min-h-0">
             <div className="space-y-2">
               {routes.map((route) => (
                 <Link
@@ -116,9 +117,8 @@ const Sidebar = ({ routes, sidebarOpen, setSidebarOpen }) => {
               </div>
             </div>
           </nav>
-
-          {/* Footer */}
-          <div className="p-4 border-t border-gray-100">
+{/* Footer */}
+          <div className="p-4 border-t border-gray-100 flex-shrink-0">
             <div className="flex items-center space-x-3 p-3 rounded-lg bg-surface-50">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warm-gradient">
                 <span className="text-sm font-medium text-white">JD</span>
