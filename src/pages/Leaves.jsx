@@ -25,12 +25,13 @@ const Leaves = () => {
     }
   }
 
-  const filteredRequests = leaveRequests.filter(request => {
+const filteredRequests = leaveRequests.filter(request => {
     if (filter === 'all') return true
-    return request.status.toLowerCase() === filter
+    return request?.status?.toLowerCase() === filter
   })
 
-  const getStatusColor = (status) => {
+const getStatusColor = (status) => {
+    if (!status) return 'bg-gray-100 text-gray-800'
     switch (status.toLowerCase()) {
       case 'approved':
         return 'bg-green-100 text-green-800'
@@ -43,7 +44,8 @@ const Leaves = () => {
     }
   }
 
-  const getTypeIcon = (type) => {
+const getTypeIcon = (type) => {
+    if (!type) return 'Calendar'
     switch (type.toLowerCase()) {
       case 'sick':
         return 'Heart'
@@ -76,10 +78,10 @@ const Leaves = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           {[
-            { label: 'Total Requests', value: leaveRequests.length, icon: 'FileText', color: 'bg-blue-500' },
-            { label: 'Pending', value: leaveRequests.filter(r => r.status === 'Pending').length, icon: 'Clock', color: 'bg-yellow-500' },
-            { label: 'Approved', value: leaveRequests.filter(r => r.status === 'Approved').length, icon: 'CheckCircle', color: 'bg-green-500' },
-            { label: 'Rejected', value: leaveRequests.filter(r => r.status === 'Rejected').length, icon: 'XCircle', color: 'bg-red-500' }
+{ label: 'Total Requests', value: leaveRequests.length, icon: 'FileText', color: 'bg-blue-500' },
+            { label: 'Pending', value: leaveRequests.filter(r => r?.status?.toLowerCase() === 'pending').length, icon: 'Clock', color: 'bg-yellow-500' },
+            { label: 'Approved', value: leaveRequests.filter(r => r?.status?.toLowerCase() === 'approved').length, icon: 'CheckCircle', color: 'bg-green-500' },
+            { label: 'Rejected', value: leaveRequests.filter(r => r?.status?.toLowerCase() === 'rejected').length, icon: 'XCircle', color: 'bg-red-500' }
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -140,59 +142,73 @@ const Leaves = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredRequests.map((request) => (
-                  <motion.tr
-                    key={request.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="hover:bg-gray-50"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 bg-warm-gradient rounded-full flex items-center justify-center text-white font-medium text-sm">
-                          {request.employeeName.charAt(0)}
+{filteredRequests.map((request) => {
+                  // Defensive data validation
+                  if (!request || !request.id) return null
+                  
+                  const employeeName = request.employeeName || 'Unknown Employee'
+                  const employeeId = request.employeeId || 'N/A'
+                  const type = request.type || 'Unknown'
+                  const status = request.status || 'pending'
+                  const startDate = request.startDate || 'TBD'
+                  const endDate = request.endDate || 'TBD'
+                  const days = request.days || 0
+                  
+                  return (
+                    <motion.tr
+                      key={request.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="hover:bg-gray-50"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="w-10 h-10 bg-warm-gradient rounded-full flex items-center justify-center text-white font-medium text-sm">
+                            {employeeName.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">{employeeName}</div>
+                            <div className="text-sm text-gray-500">{employeeId}</div>
+                          </div>
                         </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{request.employeeName}</div>
-                          <div className="text-sm text-gray-500">{request.employeeId}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <ApperIcon name={getTypeIcon(type)} className="h-5 w-5 text-gray-400 mr-2" />
+                          <span className="text-sm text-gray-900">{type}</span>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <ApperIcon name={getTypeIcon(request.type)} className="h-5 w-5 text-gray-400 mr-2" />
-                        <span className="text-sm text-gray-900">{request.type}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>
-                        <div>{request.startDate} - {request.endDate}</div>
-                        <div className="text-gray-500">{request.days} days</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.status)}`}>
-                        {request.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button className="text-primary hover:text-primary-dark">
-                          <ApperIcon name="Eye" className="h-4 w-4" />
-                        </button>
-                        {request.status === 'Pending' && (
-                          <>
-                            <button className="text-green-600 hover:text-green-700">
-                              <ApperIcon name="Check" className="h-4 w-4" />
-                            </button>
-                            <button className="text-red-600 hover:text-red-700">
-                              <ApperIcon name="X" className="h-4 w-4" />
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </motion.tr>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <div>
+                          <div>{startDate} - {endDate}</div>
+                          <div className="text-gray-500">{days} days</div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(status)}`}>
+                          {status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div className="flex space-x-2">
+                          <button className="text-primary hover:text-primary-dark">
+                            <ApperIcon name="Eye" className="h-4 w-4" />
+                          </button>
+                          {status?.toLowerCase() === 'pending' && (
+                            <>
+                              <button className="text-green-600 hover:text-green-700">
+                                <ApperIcon name="Check" className="h-4 w-4" />
+                              </button>
+                              <button className="text-red-600 hover:text-red-700">
+                                <ApperIcon name="X" className="h-4 w-4" />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </motion.tr>
+                  )
+                })}
                 ))}
               </tbody>
             </table>
